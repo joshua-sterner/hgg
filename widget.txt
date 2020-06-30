@@ -1,0 +1,59 @@
+Widget:
++ parent() : Widget*
++ children() : List<Widget&>
++ left() : Widget*
++ right() : Widget*
++ above() : Widget*
++ below() : Widget*
++ zValue() : int
++ material() : Material&
++ hidden() : bool
++ setHidden(bool) : void
++ enabled() : bool
++ setEnabled(bool) : void
++ size() : Vec2i
++ setSize(Vec2i) : void
++ minSize() : Vec2i
++ setMinSize() : Vec2i
++ maxSize() : Vec2i
++ setMaxSize() : Vec2i
++ pos() : Vec2i
++ maxMargin() : Margin
++ setMaxMargin(Margin) : void
++ cursorIn() : Widget* // can redirect to another widget upon cursor in
++ cursorOut()
+
+TODO how will layout work?
+    placeholder widgets for empty space?
+        might cause issues for dynamic layouts... maybe
+        Would probably be a bit more in-line with the whole graph-based thing, and the placeholder nodes could just not be added when using the application with only tts rendering.
+        How would this work with overlapping widgets or non-rectangular widgets (e.g. patch cables)?
+            Perhaps a flag on the widget specifying whether or not it should contribute to the UI layout computation?
+
+Widget:
+    minSize
+    preferredSIze
+    size
+    maxSize
+    pos
+
+The top left corner of the window is 0,0.
+The x axis is positive to the right.
+The y axis is positive down.
+Any widget W in a valid layout must meet the following conditions:
+    W_x is the x position of the left side of the widget
+    W_y is the y position of the top of the widget
+
+    W_x > W_left[i]_x for all indices i
+    W_y > W_above[i]_y for all indices i
+    W_x + W_width < W_right[i]_x + W_right[i]_width for all indicies i
+    W_y + W_height < W_below[i]_y + W_below[i]_height for all indicies i
+    W_minWidth < W_width < W_maxWidth
+    W_minHeight < W_height < W_maxHeight
+    
+    ...
+
+What if I separate size computation from position computation?
+
+W_x is a function of the width and position of all widgets in W_left
+W_x

@@ -1,0 +1,11 @@
+.widget {
+    position: absolute;
+    background-color: rgba(0, 255, 0, 0.1);
+    box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.4);
+    display: flex;
+    text-align: center;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: -1px;
+}
