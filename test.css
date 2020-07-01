@@ -1,3 +1,10 @@
+body {
+    display: grid;
+    margin: 0px;
+    justify-content: start;
+    align-items: start;
+}
+
 .widget {
     position: absolute;
     background-color: rgba(0, 255, 0, 0.1);
@@ -8,4 +15,106 @@
     justify-content: center;
     flex-direction: column;
     padding: -1px;
+}
+
+#widgets {
+    grid-column: 1;
+}
+
+.widget-editor {
+    grid-column: 2;
+    width: 256px;
+    display: grid;
+}
+
+.editor-panel {
+    background-color: rgba(0, 0, 255, 0.1);
+    box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+    padding: 8px;
+}
+
+.main-widget-list {
+    width: auto;
+}
+
+h1 {
+    margin: 0px;
+    margin-bottom: 8px;
+    font-size: 20pt;
+}
+
+.widget-list {
+    grid-column: 1;
+}
+.widget-list-space {
+    width: 8px;
+    display: inline-block;
+}
+
+.widget-editor * {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
+.widget-editor label {
+    grid-column-end: 1;
+}
+.widget-editor input {
+    grid-column-start: 2;
+    width: 100%;
+}
+
+#new-widget-button {
+    margin-top: 8px;
+}
+
+.widget-list-item {
+    border-radius: 12px;
+    padding-left: 5px;
+    display: inline-block;
+    background-color: rgba(0, 255, 0, 0.1);
+    box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.4), 1px 1px 3px 0px rgba(0, 0, 0, 0.3);
+    min-width: 42px;
+}
+.widget-list-item-text {
+    display: inline-block;
+    margin-left: 2px;
+    margin-right: 2px;
+    font-size: 12pt;
+}
+.widget-list-item-remove {
+    border-radius: 12px;
+    width: 19px;
+    height: 19px;
+    background-color: #f2727f;
+    box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.4);
+    display: inline-block;
+    font-family: sans;
+    text-align: center;
+    float: right;
+}
+
+label {
+    display: inline-block;
+    margin-top: 8px;
+}
+
+.text-field-with-button {
+    display: grid;
+}
+
+.text-field-with-button input {
+    display: inline;
+    width: 100%;
+    grid-column: 1;
+}
+
+.text-field-with-button button {
+    display: inline;
+    grid-column: 2;
+}
+
+body {
+    font-family: sans;
 }

@@ -4,5 +4,64 @@
         <link rel="stylesheet" href="test.css"/>
     </head>
     <body>
+        <div id="widgets"></div>
+        <div class="widget-editor editor-panel">
+            <h1>Widget Editor</h1>
+            <label for="widget-name-field">Name:</label>
+            <input list="widgets" id="widget-name-field"/>
+            <label for="widget-parent">Parent:</label>
+            <input list="widgets" id="widget-parent"/>
+
+            <label>Children:</label>
+            <div id="widget-editor-children" class="widget-list">
+            </div>
+            <div class="text-field-with-button">
+                <input list="widget-datalist" id="widget-add-child"/>
+                <button id="add-child-widget-button" type="button">Add</button>
+            </div>
+
+            <label>Left:</label>
+            <div id="widget-editor-left" class="widget-list">
+                <div class="widget-list-item"></div>
+            </div>
+            <div class="text-field-with-button">
+                <input list="widget-datalist" id="widget-add-left"/>
+                <button id="add-left-widget-button" type="button">Add</button>
+            </div>
+
+            <label>Right:</label>
+            <div id="widget-editor-right" class="widget-list">
+                <div class="widget-list-item"></div>
+            </div>
+            <div class="text-field-with-button">
+                <input list="widget-datalist" id="widget-add-right"/>
+                <button id="add-right-widget-button" type="button">Add</button>
+            </div>
+
+            <label>Above:</label>
+            <div id="widget-editor-above" class="widget-list">
+                <div class="widget-list-item"></div>
+            </div>
+            <div class="text-field-with-button">
+                <input list="widget-datalist" id="widget-add-above"/>
+                <button id="add-above-widget-button" type="button">Add</button>
+            </div>
+
+            <label>Below:</label>
+            <div id="widget-editor-below" class="widget-list">
+                <div class="widget-list-item"></div>
+            </div>
+            <div class="text-field-with-button">
+                <input list="widget-datalist" id="widget-add-below"/>
+                <button id="add-below-widget-button" type="button">Add</button>
+            </div>
+            <button id="new-widget-button">Create</button>
+
+            <datalist id="widget-datalist">
+            </datalist>
+        </div>
+        <div id="main-widget-list" class="widget-list editor-panel">
+            <h1>Widgets</h1>
+        </div>
     </body>
 </html>
