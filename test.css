@@ -25,6 +25,8 @@ body {
     grid-column: 2;
     width: 256px;
     display: grid;
+    grid-row-start: 1;
+    grid-row-end: 3;
 }
 
 .editor-panel {
@@ -36,6 +38,8 @@ body {
 
 .main-widget-list {
     width: auto;
+    grid-row-start: 2;
+    grid-row-end: 3;
 }
 
 h1 {
@@ -100,6 +104,14 @@ label {
     margin-top: 8px;
 }
 
+.widget-editor input {
+    margin-top: 8px;
+}
+
+.widget-editor button {
+    margin-top: 8px;
+}
+
 .text-field-with-button {
     display: grid;
 }
@@ -108,11 +120,13 @@ label {
     display: inline;
     width: 100%;
     grid-column: 1;
+    margin-top: 0px;
 }
 
 .text-field-with-button button {
     display: inline;
     grid-column: 2;
+    margin-top: 0px;
 }
 
 body {

@@ -124,13 +124,21 @@ function drawWidgets() {
     if (!root) {
         return;
     }
+    
+    widgets.forEach((widget) => {
+        if (widget.parent) {
+            widget.x0 = null;
+            widget.x1 = null;
+            widget.y0 = null;
+            widget.y1 = null;
+        }
+    });
 
     // set widget positions
     root.children.forEach((child) => {
         child.computeX();
         child.computeY();
     });
-
     let widgets_width = 0;
     let widgets_height = 0;
     widgets.forEach((widget) => {
@@ -140,6 +148,7 @@ function drawWidgets() {
     });
     widgets_element.style.width = widgets_width + "px";
     widgets_element.style.height = widgets_height + "px";
+    document.body.style.gridTemplateRows = widgets_height + "px auto";
 
 }
 
@@ -190,7 +199,7 @@ function removeWidget(widget) {
     processWidgets();
 }
 
-function makeWidgetListItem(widget, edit_select) {
+function makeWidgetListItem(widget, edit_select, on_remove_click) {
     let item = document.createElement("div");
     item.draggable = true;
     if (edit_select) {
@@ -208,36 +217,35 @@ function makeWidgetListItem(widget, edit_select) {
     item_remove_button.innerHTML = "X";
     item.appendChild(item_text);
     item.appendChild(item_remove_button);
-    item_remove_button.onclick = function(e) {
-        e.stopPropagation();
-        console.log("remove button clicked");
-        removeWidget(widget);
-    };
+    item_remove_button.onclick = (e) => on_remove_click(e, widget, item);
     return item;
 }
 
-function appendWidgetList(dom_element, widget_list, edit_select) {
+function appendWidgetList(dom_element, widget_list, edit_select, on_remove_click) {
     if (widget_list.length == 0) {
         return;
     }
-    dom_element.appendChild(makeWidgetListItem(widget_list[0], edit_select));
+    dom_element.appendChild(makeWidgetListItem(widget_list[0], edit_select, on_remove_click));
     for (let i = 1; i < widget_list.length; i++) {
         let space = document.createElement("span");
         space.classList.add("widget-list-space");
         dom_element.appendChild(space);
-        dom_element.appendChild(makeWidgetListItem(widget_list[i], edit_select));
+        dom_element.appendChild(makeWidgetListItem(widget_list[i], edit_select, on_remove_click));
     }
 }
 
-function updateWidgetList(dom_element, widget_list, edit_select) {
+function updateWidgetList(dom_element, widget_list, edit_select, on_remove_click) {
     clearWidgetList(dom_element);
-    appendWidgetList(dom_element, widget_list, edit_select);
+    appendWidgetList(dom_element, widget_list, edit_select, on_remove_click);
 }
 
 function processWidgets() {
     drawWidgets();
     let widget_list = document.getElementById("main-widget-list");
-    updateWidgetList(widget_list, widgets, true);
+    updateWidgetList(widget_list, widgets, true, (e, widget, item) => {
+        e.stopPropagation();
+        removeWidget(widget);
+    });
     let widget_datalist = document.getElementById("widget-datalist");
     widget_datalist.innerHTML = "";
     widgets.forEach((widget) => {
@@ -252,22 +260,63 @@ function processWidgets() {
 
 var editing_widget = null;
 
+function updateWidgetLists(widget) {
+    updateWidgetList(document.getElementById("widget-editor-children"), widget.children, false, (e, removed_widget) => {
+        widget.children = widget.children.filter(i => i != removed_widget);
+        removed_widget.parent = null;
+        updateWidgetLists(widget);
+    });
+    updateWidgetList(document.getElementById("widget-editor-left"), widget.left);
+    updateWidgetList(document.getElementById("widget-editor-right"), widget.right);
+    updateWidgetList(document.getElementById("widget-editor-above"), widget.above);
+    updateWidgetList(document.getElementById("widget-editor-below"), widget.below);
+}
+
+function findWidget(widget_label) {
+    for (i of widgets) {
+        if (i.label == widget_label) {
+            return i;
+        }
+    }
+    return null;
+}
+
 function editWidget(widget) {
     editing_widget = widget;
 
-    widget_name_field = document.getElementById("widget-name-field");
+    const widget_name_field = document.getElementById("widget-name-field");
     widget_name_field.value = widget.label;
-    widget_parent_field = document.getElementById("widget-parent");
+
+
+    const widget_parent_field = document.getElementById("widget-parent");
     if (!widget.parent) {
         widget_parent_field.value = "";
     } else {
         widget_parent_field.value = widget.parent.label;
     }
-    updateWidgetList(document.getElementById("widget-editor-children"), widget.children);
-    updateWidgetList(document.getElementById("widget-editor-left"), widget.left);
-    updateWidgetList(document.getElementById("widget-editor-right"), widget.right);
-    updateWidgetList(document.getElementById("widget-editor-above"), widget.above);
-    updateWidgetList(document.getElementById("widget-editor-below"), widget.below);
+    widget_parent_field.onchange = () => {
+        widget.parent = findWidget(widget_parent_field.value);
+        processWidgets();
+    };
+
+    updateWidgetLists(widget);
+    const widget_width_field = document.getElementById("widget-width");
+    widget_width_field.value = widget.width;
+    const widget_height_field = document.getElementById("widget-height");
+    widget_height_field.value = widget.height;
+
+    let onchange_function = () => {
+        if (widget_name_field.value == widget.label) {
+            widget.width = parseInt(widget_width_field.value);
+            widget.height = parseInt(widget_height_field.value);
+            processWidgets();
+        }
+    };
+
+    
+
+    widget_width_field.onchange = onchange_function;
+    widget_height_field.onchange = onchange_function;
 }
 
 window.onload = () => {
